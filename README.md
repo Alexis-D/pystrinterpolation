@@ -1,4 +1,4 @@
-# Interpolation string for Python!
+# Interpolation strings, for Python!
 
 ## What?
 
