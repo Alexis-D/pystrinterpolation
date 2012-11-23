@@ -82,11 +82,13 @@ class StringInterpolater(ast.NodeTransformer):
             return node
 
         # magic
-        return ast.BinOp(
-            ast.Str(''.join(new_string)),
-            ast.Mod(),
-            ast.Tuple(data, ast.Load())
-            )
+        return StringInterpolater().visit(
+                ast.BinOp(
+                    ast.Str(''.join(new_string)),
+                    ast.Mod(),
+                    ast.Tuple(data, ast.Load())
+                    )
+                )
 
     def _raise(self, node, error):
         raise StringInterpolaterError('Encountered invalid interpolation '

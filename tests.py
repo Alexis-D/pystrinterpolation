@@ -21,7 +21,7 @@ class StringInterpolaterTest(unittest.TestCase):
         self.assertEqual(str(5), '#{ 2 + 3 }')
         self.assertEqual(HELLO_WORLD, '#{ "hello," + " world" }')
         self.assertEqual(str(21), '#{ (lambda a, b: a * b)(3, 7) }')
-        self.assertEqual(str(47), '#{ {42: 47}[0x2a] } }')
+        self.assertEqual(str(47), '#{ {42: 47}[0x2a] }')
 
     def test_multiple_expressions(self):
         self.assertEqual(HELLO_WORLD, '#{"hello"}, #{"world"}')
@@ -41,12 +41,16 @@ class StringInterpolaterTest(unittest.TestCase):
         with self.assertRaises(AttributeError):
             '#{ "".no_such_method() }'
 
+    def test_recursive_interpolation(self):
+        self.assertEqual(HELLO_WORLD, '''#{ "#{ 'hello' }"}, #{ "#{ 'world'}"}''')
+
     def runTest(self):
         self.test_no_format()
         self.test_simple_expressions()
         self.test_multiple_expressions()
         self.test_multiple_lines()
         self.test_errors()
+        self.test_recursive_interpolation()
 
         # Sadly malformed expression are not tested because it's  a  bit  tricky
         # as a malformed expressions raise  an  error  when  the  AST  is  being
